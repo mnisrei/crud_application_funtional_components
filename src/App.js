@@ -5,6 +5,7 @@ import NotFound from './components/common/NotFound';
 import Header from './components/layout/Header';
 function App() {
   return (
+
     <Router>
       <div className="App">
         <Header />

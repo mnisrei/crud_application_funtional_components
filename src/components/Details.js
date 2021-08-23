@@ -1,30 +1,15 @@
 import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
 import axios from 'axios';
 import Loader from './common/Loader';
-import { baseUrl } from "./shared/platform.api";
+import { getUser } from "../redux/actions/userActions"
 import { isEmpty } from "../utils/isEmpty";
-
-const Details = (props) => {
-    const [user, setUser] = useState({});
-    const [loading, setLoading] = useState(false);
-
-    useEffect(() => {
-        const {match:{params}} = props
-        const fetchUserDetail = async () => {
-            try {
-                setLoading(true);
-                let res = await axios.get(`${baseUrl}/users/${params.id}`);
-                setUser(res.data);
-                setLoading(false);
-            } catch (error) {
-                console.error(error);
-                setLoading(false)
-            }
-        }
-        fetchUserDetail();
-    }, [props]);
-
+const Details = ({ match: { params }, users, getUser }) => {
+    const { user } = users;
     let userDetail;
+    useEffect(() => {
+        getUser(params.id)
+    }, []);
     if (!isEmpty(user)) {
         userDetail =
             <div className="card" style={{ width: "18rem" }}>
@@ -43,10 +28,22 @@ const Details = (props) => {
 
     return (
         <>
-            {loading ? <Loader /> : userDetail}
+            {users.loading ? <Loader /> : userDetail}
         </>
     )
 }
+const mapStateToProps = (state) => {
+    return {
+        users: state.users
+    }
+}
+const mapDispatchToProps = (dispatch) => {
+    return {
+        getUser: (id) => {
+            console.log(id);
+            return dispatch(getUser(id))
+        }
+    }
+}
 
-
-export default Details;
+export default connect(mapStateToProps, mapDispatchToProps)(Details);
