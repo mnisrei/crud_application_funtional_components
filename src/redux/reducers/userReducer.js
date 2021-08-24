@@ -9,11 +9,10 @@ import {
 
 const initialState = {
     loading: false,
-    users: [],
+    list: [],
     user: {},
     error: ``
 };
-let updatedData = [];
 export default function (state = initialState, action) {
     switch (action.type) {
         case FETCH_USERS_REQUEST:
@@ -29,34 +28,32 @@ export default function (state = initialState, action) {
                 error: ``
             };
         case FETCH_USERS_SUCCESS:
-
             return {
                 ...state,
                 loading: false,
-                users: action.payload,
+                list: action.payload,
                 error: ``
             };
         case FETCH_USERS_FAILURE:
             return {
                 ...state,
                 loading: false,
-                users: [],
+                list: [],
                 user: {},
                 error: action.payload
             };
         case USER_DELETE:
-            console.log(action.payload);
             return {
                 ...state,
                 loading: false,
-                users: deleteUser(state, action.payload),
+                list: action.payload,
                 error: ``
             };
         case USER_EDIT:
             return {
                 ...state,
                 loading: false,
-                users: editUser(state, action.payload),
+                list: action.payload,
                 error: ``
             };
         default:
@@ -64,19 +61,4 @@ export default function (state = initialState, action) {
     }
 
 
-}
-
-const editUser = (state, { id, login }) => {
-    return updatedData = state.users.map((singleUser) => {
-        if (singleUser.id === id) {
-            return { ...singleUser, login: login }
-        }
-        return singleUser;
-    })
-}
-
-const deleteUser = (state, id) => {
-    return updatedData = state.users.filter((user) => {
-        return user.id !== id;
-    })
 }

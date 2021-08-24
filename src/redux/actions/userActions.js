@@ -57,7 +57,6 @@ export const getAllUsers = () => {
 
 export const getUser = (id) => {
     return function (dispatch) {
-        console.log(id);
         dispatch(fetchUsersRequest());
         axios.get(`${baseUrl}/users/${id}`).then(res => {
             dispatch(fetchUserSuccess(res.data))

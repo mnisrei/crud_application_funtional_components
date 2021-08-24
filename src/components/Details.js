@@ -40,7 +40,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         getUser: (id) => {
-            console.log(id);
             return dispatch(getUser(id))
         }
     }

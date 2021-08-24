@@ -21,16 +21,25 @@ const Home = ({ users, getAllUsers, editUser, deleteUser }) => {
         });
     }
     const onSave = () => {
-        editUser(userDetails)
+        const updatedData = users.list.map((singleUser) => {
+            if (singleUser.id === userDetails.id) {
+                return { ...singleUser, login: userDetails.login }
+            }
+            return singleUser;
+        })
+        editUser(updatedData)
     }
     const onDeleteUser = (id) => {
-        deleteUser(id)
+        const updatedData = users.list.filter((user) => {
+            return user.id !== id;
+        })
+        deleteUser(updatedData)
     }
 
     const columns = ["ID", "Avatar", "Username", "Actions"]
     return (
         <div>
-            {users.loading ? <Loader /> : <Table columns={columns} data={users.users} selectUser={selectUser} onDeleteUser={onDeleteUser} />}
+            {users.loading ? <Loader /> : <Table columns={columns} data={users.list} selectUser={selectUser} onDeleteUser={onDeleteUser} />}
             {userDetails && <Modal userDetails={userDetails} onChangeUserDetails={onChangeUserDetails} onSave={onSave} />}
         </div>
     )
